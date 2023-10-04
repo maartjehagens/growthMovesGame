@@ -1,0 +1,56 @@
+<!DOCTYPE html> <html> <head> <script src = "https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser-arcade-physics.min.js" ></script > </head> <lichaam>
+
+
+     
+
+
+
+    <script> class Voorbeeld breidt Phaser uit . Scène { 
+        preload () { dit . laden . setBaseURL ( 'https://labs.phaser.io' );
+     
+    
+        
+            
+
+            dit . laden . afbeelding ( 'sky' , 'assets/skies/space3.png' ); dit . laden . afbeelding ( 'logo' , 'assets/sprites/phaser3-logo.png' ); dit . laden . afbeelding ( 'rood' , 'assets/particles/red.png' ); } 
+             
+             
+        
+
+        maak () { dit . toevoegen . afbeelding ( 400 , 300 , 'lucht' );
+        
+              
+
+            const deeltjes = dit . toevoegen . deeltjes ( 0 , 0 , 'rood' , { 
+                snelheid : 100 , 
+                schaal : { start : 1 , einde : 0 }, 
+                blendMode : 'ADD' });          
+            
+
+            const- logo = this . natuurkunde . toevoegen . afbeelding ( 400 , 100 , 'logo' );   
+
+            logo . setsnelheid ( 100 , 200 ); 
+            logo . setBounce ( 1 , 1 ); 
+            logo . setCollideWorldBounds ( true );  
+
+            deeltjes . startVolgen ( logo ); } }
+        
+    
+
+    const config = { 
+        type : Phaser . AUTO , 
+        breedte : 800 , 
+        hoogte : 600 , 
+        scène : Voorbeeld , 
+        natuurkunde : { standaard : 'arcade' , 
+            arcade : { 
+                zwaartekracht : { y : 200 } } } };      
+                 
+            
+        
+    
+
+    const spel = nieuwe Phaser . Spel ( configuratie ); </script>  
+    
+
+</body> </html>
