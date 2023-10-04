@@ -1,6 +1,6 @@
-<!doctype html> 
-<html lang="en"> 
-<head> 
+<!doctype html>
+<html lang="en">
+<head>
     <meta charset="UTF-8" />
     <title>Making your first Phaser 3 Game - Part 7</title>
     <script src="//cdn.jsdelivr.net/npm/phaser@3.11.0/dist/phaser.js"></script>
@@ -21,7 +21,7 @@
         physics: {
             default: 'arcade',
             arcade: {
-                gravity: { y: 300 },
+                gravity: { y: 0 },
                 debug: false
             }
         },
@@ -92,12 +92,21 @@
 
     function update ()
     {
+        if (player.velocityY !== 0) {
+            // Verticale snelheid op 0 zetten
+            player.setVelocityY(0);
+        }
+        if (cursors.down.isDown) {
+            // Verticale snelheid instellen
+            player.setVelocityY(160);
+        }
         if (cursors.left.isDown)
         {
             player.setVelocityX(-160);
 
             player.anims.play('left', true);
         }
+
         else if (cursors.right.isDown)
         {
             player.setVelocityX(160);
