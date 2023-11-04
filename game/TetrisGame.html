@@ -38,7 +38,7 @@
     let score = 0;
     let scoreText;
     let game = new Phaser.Game(config);
-    let currentBlock;
+    let currentBlock; // Houd bij welk OrangeBlock momenteel actief is
 
     function preload ()
     {
@@ -57,11 +57,7 @@
 
         cursors = this.input.keyboard.createCursorKeys();
 
-        blocks = this.physics.add.group({
-            key: 'OrangeBlock',
-            repeat: 1,
-            setXY: { x: 350, y: 0, stepX: 1 }
-        });
+        blocks = this.physics.add.group();
 
         scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
 
@@ -74,6 +70,8 @@
             callbackScope: this,
             loop: true
         });
+
+        createOrangeBlock(); // Maak het eerste OrangeBlock direct aan
     }
 
     function update () {
@@ -93,6 +91,13 @@
         OrangeBlock.disableBody(true, true);
         score += 10;
         scoreText.setText('Score: ' + score);
+
+        if (blocks.countActive(true) === 0)
+        {
+            blocks.children.iterate(function (child) {
+                child.enableBody(true, child.x, 0, true, true);
+            });
+        }
     }
 
     function createOrangeBlock() {
