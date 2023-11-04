@@ -44,7 +44,6 @@
         this.load.image('sky', 'assets/sky.png');
         this.load.image('ground', 'assets/platform.png');
         this.load.image('OrangeBlock', 'assets/OrangeBlock.png');
-        this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
     }
 
     function create ()
@@ -67,6 +66,14 @@
 
         this.physics.add.collider(blocks, platforms);
         this.physics.add.overlap( blocks, collectBlock, null, this);
+
+        this.time.addEvent({
+            delay: 3000,
+            callback: createOrangeBlock,
+            callbackScope: this,
+            loop: true
+        })
+
     }
 
     function update () {
@@ -84,16 +91,12 @@
         OrangeBlock.disableBody(true, true);
         score += 10;
         scoreText.setText('Score: ' + score);
+    }
 
-        if (blocks.countActive(true) === 0)
-        {
-            blocks.children.iterate(function (child) {
-
-                child.enableBody(true, child.x, 0, true, true);
-
-            });
-
-        }
+    function createOrangeBlock() {
+        var x = Phaser.Math.Between(0, 800);
+        var OrangeBlock = block.create(x, 0, 'OrangeBlock');
+        OrangeBlock.setVelocity(100)
     }
 
 </script>
