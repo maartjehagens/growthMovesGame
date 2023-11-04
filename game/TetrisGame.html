@@ -35,16 +35,17 @@
     let blocks;
     let platforms;
     let cursors;
-    let score = 0;
     let scoreText;
     let game = new Phaser.Game(config);
-    let currentBlock; // Houd bij welk OrangeBlock momenteel actief is
+    let currentBlock;
 
     function preload ()
     {
         this.load.image('sky', 'assets/sky.png');
         this.load.image('ground', 'assets/platform.png');
         this.load.image('OrangeBlock', 'assets/OrangeBlock.png');
+        this.load.image('YellowBlock', 'assets/YellowBlock.png');
+
     }
 
     function create ()
@@ -62,7 +63,6 @@
         scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
 
         this.physics.add.collider(blocks, platforms);
-        this.physics.add.overlap( blocks, collectBlock, null, this);
 
         this.time.addEvent({
             delay: 3000,
@@ -71,7 +71,7 @@
             loop: true
         });
 
-        createOrangeBlock(); // Maak het eerste OrangeBlock direct aan
+        createOrangeBlock();
     }
 
     function update () {
@@ -83,20 +83,6 @@
             } else {
                 currentBlock.setVelocityX(0);
             }
-        }
-    }
-
-    function collectBlock (OrangeBlock)
-    {
-        OrangeBlock.disableBody(true, true);
-        score += 10;
-        scoreText.setText('Score: ' + score);
-
-        if (blocks.countActive(true) === 0)
-        {
-            blocks.children.iterate(function (child) {
-                child.enableBody(true, child.x, 0, true, true);
-            });
         }
     }
 
