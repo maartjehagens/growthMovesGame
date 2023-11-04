@@ -67,13 +67,11 @@
         this.physics.add.collider(blocks, platforms);
         this.physics.add.overlap( blocks, collectBlock, null, this);
 
-        // Voeg een timer toe om nieuwe OrangeBlocks te maken
         this.time.addEvent({
-            delay: 3000, // stel hier in hoe vaak je nieuwe OrangeBlocks wilt maken (in milliseconden)
+            delay: 3000,
             callback: createOrangeBlock,
             callbackScope: this,
-            loop: true // laat de timer zich herhalen
-        });
+            loop: true
     }
 
     function update () {
@@ -93,11 +91,10 @@
         scoreText.setText('Score: ' + score);
     }
 
-    // Functie om een nieuwe OrangeBlock te maken
     function createOrangeBlock() {
-        var x = Phaser.Math.Between(0, 800); // Genereer een willekeurige x-positie
+        var x = Phaser.Math.Between(0, 800);
         var OrangeBlock = blocks.create(x, 0, 'OrangeBlock');
-        OrangeBlock.setVelocityY(100); // Stel een neerwaartse snelheid in
+        OrangeBlock.setVelocityY(100);
     }
 
 </script>
