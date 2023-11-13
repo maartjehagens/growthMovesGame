@@ -39,6 +39,7 @@
     let cursors;
     let blockTimer;
     let game = new Phaser.Game(config);
+    let blocks = []; // Array om blokken bij te houden
 
     function preload ()
     {
@@ -57,8 +58,11 @@
         platforms.create(400, 568, 'groundPlatform').setScale(2).refreshBody();
 
         player = this.physics.add.sprite(100, 100, 'OrangeBlock');
-        player.setBounce(0.2);
+        //player.setBounce(0.2);
         player.setCollideWorldBounds(true);
+
+        blocks.push(player); // Voeg het eerste blok toe aan de array
+
 
         blockTimer = this.time.addEvent({
             delay: 5000, // 5000 milliseconden (5 seconden)
@@ -72,49 +76,48 @@
         cursors = this.input.keyboard.createCursorKeys();
     }
 
-    function switchBlock() {
-        // Plaats een nieuw blockje bovenaan het scherm
+    function switchBlock()
+    {
+        // Plaats een nieuw blok bovenaan het scherm
         let newBlock = this.physics.add.sprite(100, 100, 'OrangeBlock');
-        newBlock.setBounce(0.2);
+        //newBlock.setBounce(0.2);
         newBlock.setCollideWorldBounds(true);
 
         // Voeg een collider toe voor de nieuwe blokken
         this.physics.add.collider(newBlock, platforms);
 
-        // Voeg ook een collider toe met het bestaande blok
-        this.physics.add.collider(newBlock, player);
+        // Voeg ook een collider toe met het vorige blok
+        this.physics.add.collider(newBlock, blocks[blocks.length - 1]);
 
-        // Update de speler naar het nieuwe blok
-        player = newBlock;
+        // Voeg het nieuwe blok toe aan de array
+        blocks.push(newBlock);
     }
 
-    function update()
-    {
-        // Stop beweging als geen toets is ingedrukt
-        player.setVelocity(0);
+    function update() {
+        // Stop horizontal movement if no key is pressed
+        blocks[blocks.length - 1].setVelocityX(0);
 
         if (cursors.left.isDown) {
-            // Beweeg naar links
-            player.setVelocityX(-160);
+            // Move left
+            blocks[blocks.length - 1].setVelocityX(-160);
         } else if (cursors.right.isDown) {
-            // Beweeg naar rechts
-            player.setVelocityX(160);
+            // Move right
+            blocks[blocks.length - 1].setVelocityX(160);
         }
 
-        if (cursors.down.isDown) {
-            // Beweeg naar beneden
-            player.setVelocityY(160);
+        // Apply a constant downward velocity to make the block fall
+        blocks[blocks.length - 1].setVelocityY(160);
+
+        if (cursors.up.isDown && blocks[blocks.length - 1].body.touching.down) {
+            // Jump only if the block is on the ground
+            blocks[blocks.length - 1].setVelocityY(-630);
         }
 
-        if (cursors.up.isDown && player.body.touching.down) {
-            player.setVelocityY(-630);
-        }
-
-        // Animatie beheren
-        if (player.body.velocity.x < 0) {
-            player.flipX = true;
-        } else if (player.body.velocity.x > 0) {
-            player.flipX = false;
+        // Manage animation
+        if (blocks[blocks.length - 1].body.velocity.x < 0) {
+            blocks[blocks.length - 1].flipX = true;
+        } else if (blocks[blocks.length - 1].body.velocity.x > 0) {
+            blocks[blocks.length - 1].flipX = false;
         }
     }
 
