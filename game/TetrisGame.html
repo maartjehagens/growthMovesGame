@@ -1,5 +1,3 @@
-
-
 <!doctype html>
 <html lang="en">
 <head>
@@ -40,6 +38,7 @@
     let blockTimer;
     let game = new Phaser.Game(config);
     let blocks = []; // Array om blokken bij te houden
+    let score = 0; // Score variabele
 
     function preload ()
     {
@@ -58,11 +57,9 @@
         platforms.create(400, 568, 'groundPlatform').setScale(2).refreshBody();
 
         player = this.physics.add.sprite(100, 100, 'OrangeBlock');
-        //player.setBounce(0.2);
         player.setCollideWorldBounds(true);
 
         blocks.push(player); // Voeg het eerste blok toe aan de array
-
 
         blockTimer = this.time.addEvent({
             delay: 5000, // 5000 milliseconden (5 seconden)
@@ -74,20 +71,29 @@
         this.physics.add.collider(player, platforms);
 
         cursors = this.input.keyboard.createCursorKeys();
+
+        // Score tekst toevoegen
+        this.scoreText = this.add.text(16, 16, 'Score: 0', { fontSize: '32px', fill: '#fff' });
     }
 
     function switchBlock()
     {
         // Plaats een nieuw blok bovenaan het scherm
         let newBlock = this.physics.add.sprite(100, 100, 'OrangeBlock');
-        //newBlock.setBounce(0.2);
         newBlock.setCollideWorldBounds(true);
 
         // Voeg een collider toe voor de nieuwe blokken
         this.physics.add.collider(newBlock, platforms);
 
         // Voeg ook een collider toe met het vorige blok
-        this.physics.add.collider(newBlock, blocks[blocks.length - 1]);
+        this.physics.add.collider(newBlock, blocks[blocks.length - 1], function() {
+            // Score alleen bijwerken als het nog niet eerder is gebeurd
+            if (!newBlock.getData('scored')) {
+                score += 10;
+                this.scoreText.setText('Score: ' + score);
+                newBlock.setData('scored', true);
+            }
+        }, null, this);
 
         // Voeg het nieuwe blok toe aan de array
         blocks.push(newBlock);
