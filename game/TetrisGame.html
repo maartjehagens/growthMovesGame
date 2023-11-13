@@ -48,6 +48,7 @@
         this.load.image('OrangeBlock', 'assets/OrangeBlock.png');
     }
 
+
     function create()
     {
         this.add.image(400, 300, 'sky');
@@ -73,10 +74,18 @@
 
     function switchBlock() {
         // Plaats een nieuw blockje bovenaan het scherm
-        player = this.physics.add.sprite(100, 100, 'OrangeBlock');
-        player.setBounce(0.2);
-        player.setCollideWorldBounds(true);
-        this.physics.add.collider(player, platforms);
+        let newBlock = this.physics.add.sprite(100, 100, 'OrangeBlock');
+        newBlock.setBounce(0.2);
+        newBlock.setCollideWorldBounds(true);
+
+        // Voeg een collider toe voor de nieuwe blokken
+        this.physics.add.collider(newBlock, platforms);
+
+        // Voeg ook een collider toe met het bestaande blok
+        this.physics.add.collider(newBlock, player);
+
+        // Update de speler naar het nieuwe blok
+        player = newBlock;
     }
 
     function update()
