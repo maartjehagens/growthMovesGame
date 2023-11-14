@@ -74,23 +74,26 @@
         this.scoreText = this.add.text(16, 16, 'Score: 0', { fontSize: '32px', fill: '#fff' });
     }
 
-    function switchBlock()
-    {
+    function switchBlock() {
         let newBlock = this.physics.add.sprite(100, 100, 'OrangeBlock');
         newBlock.setCollideWorldBounds(true);
 
         this.physics.add.collider(newBlock, platforms);
 
-        this.physics.add.collider(newBlock, blocks[blocks.length - 1], function() {
-            if (!newBlock.getData('scored')) {
-                score += 10;
-                this.scoreText.setText('Score: ' + score);
-                newBlock.setData('scored', true);
-            }
-        }, null, this);
+        for (let i = 0; i < blocks.length; i++) {
+            this.physics.add.collider(newBlock, blocks[i], function() {
+                if (!newBlock.getData('scored')) {
+                    score += 10;
+                    this.scoreText.setText('Score: ' + score);
+                    newBlock.setData('scored', true);
+                }
+            }, null, this);
+        }
 
         blocks.push(newBlock);
     }
+
+
 
     function update() {
         blocks[blocks.length - 1].setVelocityX(0);
