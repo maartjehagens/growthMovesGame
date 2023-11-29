@@ -165,8 +165,6 @@
     }
 
 
-
-
     function generateMathProblem() {
         let num1 = Phaser.Math.Between(1, 3);
         let num2 = Phaser.Math.Between(1, 3);
@@ -174,6 +172,8 @@
         let problem = `What is ${num1} + ${num2}?`;
 
         mathProblemText.setText(problem);
+
+        collectedStars = 0;
     }
 
 </script>
