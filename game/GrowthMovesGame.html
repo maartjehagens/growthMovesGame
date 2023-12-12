@@ -149,38 +149,52 @@
     }
 
     function collectStar(player, star) {
+        let index = -1;
 
-        star.disableBody(true, true);
-
-        collectedStars += star.value; // Verhoog collectedStars met de waarde van de ster
-        console.log("collectedStars", collectedStars);
-        console.log("result", result);
-
-        if (collectedStars > result) {
-            gameOverText.setVisible(true);
-
-            player.setTint(0xff0000);
-            player.setVelocityX(0);
-            console.log("gameOverText");
-        } else {
-            gameOverText.setVisible(false);
+        // Zoek de index van de ster in de array
+        for (let i = 0; i < stars.children.entries.length; i++) {
+            if (stars.children.entries[i] === star) {
+                index = i;
+                break;
+            }
         }
 
-        if (collectedStars === result) {
-            generateMathProblem();
-        } else {
-            console.log("Aantal verzamelde sterren is niet gelijk aan het resultaat van de som.");
+        if (index !== -1) {
+            // Bijbehorende waarde uitschakelen
+            valueTextArray[index].destroy();
+
+            // Ster uitschakelen
+            star.disableBody(true, true);
+
+            collectedStars += star.value;
+            console.log("collectedStars", collectedStars);
+            console.log("result", result);
+
+            if (collectedStars > result) {
+                gameOverText.setVisible(true);
+
+                player.setTint(0xff0000);
+                player.setVelocityX(0);
+                console.log("gameOverText");
+            } else {
+                gameOverText.setVisible(false);
+            }
+
+            if (collectedStars === result) {
+                generateMathProblem();
+            } else {
+                console.log("Aantal verzamelde sterren is niet gelijk aan het resultaat van de som.");
+            }
+
+            score += 10;
+            scoreText.setText('Score: ' + score);
+
+            if (stars.countActive(true) === 0) {
+                stars.children.iterate(function (child) {
+                    child.enableBody(true, child.x, 0, true, true);
+                });
+            }
         }
-
-        score += 10;
-        scoreText.setText('Score: ' + score);
-
-        if (stars.countActive(true) === 0) {
-            stars.children.iterate(function (child) {
-                child.enableBody(true, child.x, 0, true, true);
-            });
-        }
-
     }
 
 
