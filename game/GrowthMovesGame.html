@@ -44,6 +44,7 @@
     let result = 0;
     let game = new Phaser.Game(config);
     let gameOverText;
+    let valueTextArray = [];
 
 
     function preload() {
@@ -81,9 +82,9 @@
         });
 
         stars.children.iterate(function (child) {
-
             child.value = Phaser.Math.Between(1, 3); // Geef elke ster een willekeurige waarde tussen 1 en 3
             let valueText = this.add.text(child.x - 10, child.y - 10, child.value, { fontSize: '16px', fill: '#000' });
+            valueTextArray.push(valueText);
         }, this);
 
         scoreText = this.add.text(16, 16, 'Score: 0', { fontSize: '32px', fill: '#000' });
@@ -121,6 +122,9 @@
         if (gameOver) {
             return;
         }
+        stars.children.iterate(function (child, index) {
+            valueTextArray[index].setPosition(child.x - 10, child.y - 10);
+        });
 
         if (cursors.left.isDown) {
             player.setVelocityX(-160);
